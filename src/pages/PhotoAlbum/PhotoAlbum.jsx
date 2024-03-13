@@ -1,7 +1,5 @@
 /** @jsxImportSource @emotion/react */
-
-import { useRef, useState } from "react";
-import { layout } from "../Home/style";
+import { useEffect, useState } from "react";
 import * as S from "./style";
 
 /**
@@ -12,11 +10,26 @@ import * as S from "./style";
  */
 
 function PhotoAlbum() {
-    
+    const [ loadPhotos, setLoadPhotos ] = useState([]);
+
+    useEffect(() => {
+        const localStorageFiles = !localStorage.getItem("photo") 
+                                    ? [] 
+                                    : JSON.parse(localStorage.getItem("photo"));
+
+        setLoadPhotos(() => localStorageFiles);
+    }, []);
 
     return (
-        <div>
-            
+        <div css={S.layout}>
+            {loadPhotos.map(
+                (photo) => 
+                    <div key={photo.id} css={S.imageCard}>
+                        <div css={S.imageBox}>
+                            <img src={photo.imageUrl} alt="" />
+                        </div>
+                    </div>
+            )}
         </div>
     );
 }
