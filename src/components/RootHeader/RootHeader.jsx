@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { mypageSubmitRefreshState } from "../../atoms/mypageSubmitRefresh";
 
 function RootHeader() {
+
     const [ profileImage, setProfileImage ] = useState(defaultImg);
     const [ refresh, setRefresh ] = useRecoilState(mypageSubmitRefreshState);
 

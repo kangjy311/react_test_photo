@@ -8,7 +8,7 @@ import { SIDEBAR_MENUS } from './constants/menu';
 import { RecoilRoot } from 'recoil';
 
 function App() {
-
+  
   return (
     <RootLayout>
       <RecoilRoot>

@@ -23,28 +23,29 @@ import { useNavigate } from "react-router-dom";
  *  5. 취소시 저정되면 안됨.
  */
 
-function PhotoRegister() {
+function PhotoRegister() { 
     const navigate = useNavigate();
     const fileRef = useRef();
-    const [ laodPhotos, setLoadPhotos ] = useState([]);
+    const [ loadPhotos, setLoadPhotos ] = useState([]);
     const [ photoSeq, setPhotoSeq ] = useState([]);
 
     useEffect(() => {
-        setLoadPhotos(() => laodPhotos.map(
+        setLoadPhotos(() => loadPhotos.map(
             (photo) => {
                 return {
                     ...photo,
                     seq: photoSeq.includes(photo.id) ? photoSeq.indexOf(photo.id) + 1 : 0
                 }
             }
-        ));
+        ))
     }, [photoSeq])
 
     const handleFileChange = (e) => {
+        console.log(e.target.files);
         const fileList = e.target.files;
         const fileArray = Array.from(fileList);
-        
-        fileRef.current.value = "";
+
+        fileRef.current.value   = "";
 
         if(fileArray.length === 0) {
             return;
@@ -65,6 +66,7 @@ function PhotoRegister() {
             )
         );
 
+        console.log(filePromiseArray);
         Promise.all(filePromiseArray).then(
             (result) => {
                 setLoadPhotos(() => result.map(
@@ -75,49 +77,50 @@ function PhotoRegister() {
                             dataUrl
                         }
                     }
-                ));
+                )); 
             }
-        );
-
+        )
     }
 
     const handlePhotoCheck = (id) => {
         if(photoSeq.includes(id)) {
             setPhotoSeq(photoSeq => photoSeq.filter(seq => seq !== id));
-        }else {
+        } else {
             setPhotoSeq(photoSeq => [...photoSeq, id]);
         }
     }
 
+    console.log(photoSeq);
+
     const handleSubmitClick = () => {
-        const isSave = window.confirm("사진을 저장하시겠습니까?");
-        if(!isSave) {
-            return;
-        }
-        const localStorageFiles = !localStorage.getItem("photo") 
-                                    ? [] 
-                                    : JSON.parse(localStorage.getItem("photo"));
+            const isSave = window.confirm("사진을 저장하시겠습니까?");
+            if(!isSave) {
+                return;
+            }
+            const localStorageFiles = !localStorage.getItem("photo") 
+                                        ? [] 
+                                        : JSON.parse(localStorage.getItem("photo"));
 
-        const lastId = localStorageFiles.length === 0 
-                        ? 0 
-                        : localStorageFiles[localStorageFiles.length - 1].id;
+            const lastId = localStorageFiles.length === 0 
+                            ? 0 
+                            : localStorageFiles[localStorageFiles.length -1 ].id;
 
-        const newPhotos = laodPhotos
-            .filter(photo => photo.seq !== 0)
-            .sort((photoA, photoB) => photoA.seq - photoB.seq)
-            .map(
-                (photo, index) => {
-                    return {
-                        id: lastId + index + 1,
-                        imageUrl: photo.dataUrl
+            const newPhotos = loadPhotos
+                .filter(photo => photo.seq !== 0)
+                .sort((photoA, photoB) => photoA.seq - photoB.seq)
+                .map(
+                    (photo, index) => {
+                        return {
+                            id: lastId + index + 1,
+                            imageUrl: photo.dataUrl
+                        }
                     }
-                }
-            );
-        const newFiles = [...localStorageFiles, ...newPhotos];
-        localStorage.setItem("photo", JSON.stringify(newFiles));
-        alert("사진 저장을 완료하였습니다.");
-        navigate("/photo/album");
-    }
+                );
+            const newFiles = [...localStorageFiles, ...newPhotos];  
+            localStorage.setItem("photo", JSON.stringify(newFiles));
+            alert("사진 저장을 완료하였습니다.")
+            navigate("/photo/album");
+    } 
 
     return (
         <div css={S.layout}>
@@ -132,12 +135,12 @@ function PhotoRegister() {
                 ref={fileRef}
                 onChange={handleFileChange}
             />
-            <div css={S.container}>
+            <dir css={S.container}>
                 {
-                    laodPhotos.map(
-                        photo => 
+                    loadPhotos.map(
+                        photo =>
                             <div key={photo.id}>
-                                <input css={S.checkBox} type="checkbox" id={"img" + photo.id} onChange={() => handlePhotoCheck(photo.id)} />
+                                <input css={S.checkBox} type="checkbox" id={"img" + photo.id} onChange={() => handlePhotoCheck(photo.id)}/>
                                 <label css={S.imageBox} htmlFor={"img" + photo.id}>
                                     <div>{photo.seq}</div>
                                     <img src={photo.dataUrl} alt="" />
@@ -145,8 +148,9 @@ function PhotoRegister() {
                             </div>
                     )
                 }
-            </div>
-            <WideButton text={"사진 불러오기"} onClick={() => fileRef.current.click()}/>
+                
+            </dir>
+                <WideButton text={"사진 불러오기"} onClick={() => fileRef.current.click()}/>
         </div>
     );
 }

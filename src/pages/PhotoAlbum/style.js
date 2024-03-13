@@ -6,7 +6,7 @@ export const layout = css`
 
 export const imageCard = css`
     box-sizing: border-box;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     border: 1px solid #151515;
     width: 100%;
     height: 300px;
@@ -21,7 +21,6 @@ export const imageBox = css`
     height: 250px;
     background-color: #000000;
     overflow: hidden;
-
     & > img {
         height: 100%;
     }

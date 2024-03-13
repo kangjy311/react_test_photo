@@ -4,9 +4,8 @@ import WideButton from "../../components/WideButton/WideButton";
 import { useInput } from "../../hooks/useInput";
 import * as S from "./style";
 import defaultProfile from "../../assets/images/profile/default.jpeg"
-import { useRecoilSnapshot, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { mypageSubmitRefreshState } from "../../atoms/mypageSubmitRefresh";
-
 
 /**
  * 
@@ -21,30 +20,31 @@ import { mypageSubmitRefreshState } from "../../atoms/mypageSubmitRefresh";
  *  저장되어야하고 페이지 로드시 불러와야함.
  * 3. RootHeader의 프로필 이미지도 변경되어야함.
  */
-function Mypage() {
+
+function Mypage(props) {
     const [ nicknameValue, setNicknameValue, handleNicknameOnChange ] = useInput();
     const [ nameValue, setNameValue, handleNameOnChange ] = useInput();
-    const [ birthdayValue, setBirthdayValue, handleBirthdayOnChange ] = useInput();
+    const [ birthdayValue, setBirthDayValue, handleBirthdayOnChange ] = useInput();
     const [ profileUrl, setProfileUrl ] = useState(defaultProfile);
-
-    const [ refresh, setRefresh ] = useRecoilState(mypageSubmitRefreshState);
     
+    const [ refresh, setRefresh ] = useRecoilState(mypageSubmitRefreshState);
+
     const fileRef = useRef();
 
     useEffect(() => {
         const localStorageUser = localStorage.getItem("user");
-        if(!!localStorageUser) {
+        if(!!localStorageUser) {    // 값이 있을 때 (!! -> boolean 으로 )
             const user = JSON.parse(localStorageUser);
             setNicknameValue(() => user.nickname);
             setNameValue(() => user.name);
-            setBirthdayValue(() => user.birthday);
+            setBirthDayValue(() => user.birthday);
             setProfileUrl(() => user.imgUrl);
         }
     }, []);
 
     const handleFileChange = (e) => {
         const files = e.target.files;
-
+        
         if(files.length === 0) {
             return;
         }
@@ -56,9 +56,7 @@ function Mypage() {
         fileReader.onload = (e) => {
             setProfileUrl(() => e.target.result);
         }
-
         fileReader.readAsDataURL(file);
-
     }
 
     const handleSubmitClick = () => {

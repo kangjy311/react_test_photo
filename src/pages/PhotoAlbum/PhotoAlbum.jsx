@@ -17,7 +17,7 @@ function PhotoAlbum() {
                                     ? [] 
                                     : JSON.parse(localStorage.getItem("photo"));
 
-        setLoadPhotos(() => localStorageFiles);
+        setLoadPhotos(() => localStorageFiles);                            
     }, []);
 
     return (

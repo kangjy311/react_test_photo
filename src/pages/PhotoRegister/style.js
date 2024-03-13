@@ -32,11 +32,11 @@ export const submitButton = css`
     background-color: transparent;
     cursor: pointer;
 
-    &:hover {
+    &:hover{
         color: #a8e0ff;
     }
 `;
-
+    
 export const container = css`
     display: flex;
     align-content: flex-start;
@@ -45,7 +45,7 @@ export const container = css`
     width: 100%;
 `;
 
-export const imageBox = css`
+export const imageBox = css`    
     position: relative;
     box-sizing: border-box;
     display: flex;
@@ -63,11 +63,9 @@ export const imageBox = css`
     &:hover {
         border: 2px solid #000000;
     }
-
-    &:active {
+    &:active{
         border: 3px solid #000000;
     }
-
     & > img {
         height: 100%;
     }
@@ -80,8 +78,7 @@ export const checkBox = css`
     & + label > div {
         display: none;
     }
-
-    &:checked + label > div {
+    &:checked + label > div{
         position: absolute;
         bottom: 5px;
         right: 5px;
@@ -98,4 +95,4 @@ export const checkBox = css`
         color: #222222;
         cursor: pointer;
     }
-`
+`;
